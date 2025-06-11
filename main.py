@@ -1,6 +1,7 @@
-from utils.data_prep.data_prep import create_dataloader, embed_tokens
+from utils.data_prep.data_prep import create_dataloader
 import csv
 import tiktoken
+from utils.gpt.gpt import AaronGPTModel
 
 def read_format_csv(file_path):
     jokes = ""
@@ -14,12 +15,21 @@ def read_format_csv(file_path):
 
 def __main__():
     max_length = 4
-    text = read_format_csv("./utils/data/short_jokes_100.csv")
-    dataloader = create_dataloader(text, batch_size=1, max_length=max_length, stride=max_length, shuffle=False)
+    # text = read_format_csv("./utils/data/short_jokes_100.csv")
+
+    text = "Hello my name is Aaron, next week I will be free. Today, I went to the mall."
+    dataloader = create_dataloader(text, batch_size=2, max_length=max_length, stride=max_length, shuffle=False)
     data_iter = iter(dataloader)
 
     inputs, targets = next(data_iter)
-    print(embed_tokens(inputs, max_length))
+    
+    model = AaronGPTModel()
+
+    out = model(inputs)
+
+    print(inputs)
+    print(out.shape)
+    print(out)
 
 
 __main__()

@@ -1,7 +1,8 @@
 tempCodeRunnerFile.*
 
-short_jokes.csv
-short_jokes_100.csv
+test_data.txt
+train_data.txt
+validation_data.txt
 
 __pycache__/
 *.pyc

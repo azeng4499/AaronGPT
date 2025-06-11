@@ -1,4 +1,5 @@
 import torch 
+from utils.config import GPT_CONFIG as config
 
 class GELU(torch.nn.Module):
     def __init__(self):
@@ -9,7 +10,7 @@ class GELU(torch.nn.Module):
         
 
 class FeedForward(torch.nn.Module):
-    def __init__(self, config):
+    def __init__(self):
         super().__init__()
         self.layers = torch.nn.Sequential(
             torch.nn.Linear(config["emb_dim"], 4 * config["emb_dim"]), 

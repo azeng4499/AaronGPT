@@ -13,7 +13,7 @@ class MultiHeadAttention(torch.nn.Module):
         self.W_v = torch.nn.Linear(dim_in, dim_out, bias=qkv_bias)
         self.out_proj = torch.nn.Linear(dim_out, dim_out)
         self.dropout = torch.nn.Dropout(dropout)
-        self.register_buffer("mask", torch.triu(torch.ones(context_length, context_length, diagonal=1)))
+        self.register_buffer("mask", torch.triu(torch.ones(context_length, context_length), diagonal=1))
 
     def forward(self, x):
         batch, seq_length, emb_dim = x.shape

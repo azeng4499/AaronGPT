@@ -36,15 +36,4 @@ def create_dataloader(text, batch_size=32, max_length=64, stride=64, shuffle=Tru
     return dataloader
 
 
-def embed_tokens(inputs, context_length):
-    vocab_size = 50257 #tiktoken vocab size
-    output_dim = 256
-    token_embedding_layer = torch.nn.Embedding(vocab_size, output_dim)
-    token_embeddings = token_embedding_layer(inputs)
-
-    position_embedding_layer = torch.nn.Embedding(context_length, output_dim)
-    position_embeddings = position_embedding_layer(torch.arange(context_length))
-    input_embeddings = token_embeddings + position_embeddings
-  
-    return input_embeddings;
 
