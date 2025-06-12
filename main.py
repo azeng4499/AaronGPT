@@ -52,7 +52,7 @@ def train_model(model, train_loader, val_loader, optimizer, device, num_epochs, 
 
 
 def __main__():
-    with open("./data/test_file.txt", "r", encoding="utf-8") as file:
+    with open("./data/wikitext_2_train_data.txt", "r", encoding="utf-8") as file:
         text_data = format_data(file)
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -65,7 +65,7 @@ def __main__():
 
         train_loader = create_dataloader(
             train_data,
-            batch_size=6,
+            batch_size=16,
             max_length=config["context_length"],
             stride=config["context_length"],
             drop_last=True,
@@ -75,7 +75,7 @@ def __main__():
 
         val_loader = create_dataloader(
             val_data,
-            batch_size=6,
+            batch_size=16,
             max_length=config["context_length"],
             stride=config["context_length"],
             drop_last=False,
@@ -88,7 +88,7 @@ def __main__():
             model.parameters(),
             lr=0.0004, weight_decay=0.1
         )
-        num_epochs = 10
+        num_epochs = 6
         log_message("################## New train ##################")
 
         train_losses, val_losses, track_tokens_seen = train_model(
@@ -98,8 +98,8 @@ def __main__():
             optimizer, 
             device,
             num_epochs=num_epochs, 
-            eval_freq=5, 
-            eval_iter=5,
+            eval_freq=200, 
+            eval_iter=50,
             start_context="The universe does", 
             tokenizer=tokenizer
         )    
