@@ -5,20 +5,32 @@ import re
 
 def format_data(file):
     final_text_concat = ""
-    title_pattern = re.compile(r"^=+\s.*?\s=+$")
-    current_article = ""
+    title_pattern = r"^\s*=.*=\s*$"
+    eos_flag = False
 
     for line in file:
         stripped = line.strip()
-        if len(stripped) > 0:
-            if title_pattern.match(stripped) and len(current_article) > 0:
-                current_article += " <|EOS|> "
-                final_text_concat += current_article
-                current_article = ""
-            else:
-                current_article += stripped + ""
+        stripped = re.sub(r"@-@", "-", stripped)
+        stripped = re.sub(r"@\.\s*@", ".", stripped)
+        stripped = re.sub(r"@,\s*@", ",", stripped)
+        stripped = re.sub(r'" *([^"]*?) *"', r'"\1"', stripped)
+        stripped = re.sub(r"\s+(?=[,\.\]\)\?\$\#\%\'\:\!\;\)])", "", stripped)
+        stripped = re.sub(r"(?<!-)\s*-\s*(?!-)", "-", stripped)
+        stripped = re.sub(r"(?<=[\[\(])\s+", "", stripped)
+        stripped = re.sub(r"(\d)\.\s+(\d)", r"\1.\2", stripped)
+        stripped = re.sub(r"(\d)\,\s+(\d)", r"\1.\2", stripped)
 
-    return final_text_concat
+        if len(stripped) > 0:
+            if re.match(title_pattern, stripped):
+                if not eos_flag:
+                    final_text_concat += "<|EOS|> "
+                eos_flag = True
+            else:
+                final_text_concat += stripped + " "
+                eos_flag = False
+
+    final_text_concat += "<|EOS|> "
+    return final_text_concat[8:]
 
 
 def tokenize(text):
