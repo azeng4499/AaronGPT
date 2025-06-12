@@ -52,7 +52,7 @@ def train_model(model, train_loader, val_loader, optimizer, device, num_epochs, 
 
 
 def __main__():
-    with open("./data/wikitext_2_train_data.txt", "r", encoding="utf-8") as file:
+    with open("./data/train_data.txt", "r", encoding="utf-8") as file:
         text_data = format_data(file)
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -67,7 +67,7 @@ def __main__():
             train_data,
             batch_size=16,
             max_length=config["context_length"],
-            stride=config["context_length"],
+            stride=config["context_length"] // 2,
             drop_last=True,
             shuffle=True,
             num_workers=0
@@ -77,7 +77,7 @@ def __main__():
             val_data,
             batch_size=16,
             max_length=config["context_length"],
-            stride=config["context_length"],
+            stride=config["context_length"] // 2,
             drop_last=False,
             shuffle=False,
             num_workers=0
@@ -100,7 +100,7 @@ def __main__():
             num_epochs=num_epochs, 
             eval_freq=200, 
             eval_iter=50,
-            start_context="The universe does", 
+            start_context="In the future", 
             tokenizer=tokenizer
         )    
         torch.save(model.state_dict(), "trained_model.pt")
