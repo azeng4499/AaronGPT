@@ -3,7 +3,7 @@ import torch
 from datetime import datetime
 
 def log_message(msg):
-    if msg:
+    if len(msg) > 0:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open("training_logs.txt", "a") as f:
             f.write(f"{timestamp} -> {msg}\n")

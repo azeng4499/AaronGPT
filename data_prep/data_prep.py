@@ -1,6 +1,24 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 import tiktoken
+import re
+
+def format_data(file):
+    final_text_concat = ""
+    title_pattern = re.compile(r"^=+\s.*?\s=+$")
+    current_article = ""
+
+    for line in file:
+        stripped = line.strip()
+        if len(stripped) > 0:
+            if title_pattern.match(stripped) and len(current_article) > 0:
+                current_article += " <|EOS|> "
+                final_text_concat += current_article
+                current_article = ""
+            else:
+                current_article += stripped + ""
+
+    return final_text_concat
 
 
 def tokenize(text):
