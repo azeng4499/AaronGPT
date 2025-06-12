@@ -3,6 +3,11 @@ tempCodeRunnerFile.*
 test_data.txt
 train_data.txt
 validation_data.txt
+the_verdict.txt
 
 __pycache__/
 *.pyc
+
+
+training_logs.txt
+trained_model.pt
