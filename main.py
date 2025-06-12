@@ -1,6 +1,7 @@
 import torch
 import tiktoken
 import re
+import os
 from datetime import datetime
 from data_prep.data_prep import create_dataloader
 from gpt.gpt import AaronGPTModel
