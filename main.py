@@ -109,8 +109,11 @@ def __main__():
 
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
             optimizer, 
-            T_max=25,
-            eta_min=1e-6
+            mode='min',           # Monitor for minimum val_loss
+            factor=0.7,           # Reduce LR by 30% when triggered
+            patience=3,           # Wait 3 epochs before reducing
+            verbose=True,         # Print when LR is reduced
+            min_lr=1e-6          # Don't go below this LR
         )
         
         num_epochs = 25

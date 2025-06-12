@@ -35,7 +35,7 @@ def format_data(file):
 
 def tokenize(text):
     tokenizer = tiktoken.get_encoding("gpt2")
-    token_ids = tokenizer.encode(text, allowed_special={"<|endoftext|>"})
+    token_ids = tokenizer.encode(text, allowed_special={"<|EOS|>"})
     return token_ids
 
 class AaronGPTDataset(Dataset):
