@@ -9,7 +9,11 @@ from config.config import GPT_CONFIG as config
 from utils.utils import evaluate_model, log_message, generate_and_print_sample, calc_loss_batch
 from data_prep.data_prep import format_data
 
-def train_model(model, train_loader, val_loader, optimizer, device, num_epochs, eval_freq, eval_iter, start_context, tokenizer):
+def train_model(model, train_loader, val_loader, optimizer, device, num_epochs, eval_freq, eval_iter, start_context, tokenizer, scheduler):
+    early_stopping_patience = 5 
+    best_val_loss = float('inf')
+    patience_counter = 0
+    
     train_losses, val_losses, track_tokens_seen = [], [], []
     tokens_seen, global_step = 0, -1
     last_checkpoint_path = None
@@ -48,6 +52,18 @@ def train_model(model, train_loader, val_loader, optimizer, device, num_epochs, 
 
         last_checkpoint_path = checkpoint_path 
 
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            
+        if patience_counter >= early_stopping_patience:
+            print(f"Early stopping at epoch {epoch}")
+            break
+            
+        scheduler.step()
+
     return train_losses, val_losses, track_tokens_seen
 
 
@@ -65,7 +81,7 @@ def __main__():
 
         train_loader = create_dataloader(
             train_data,
-            batch_size=16,
+            batch_size=8,
             max_length=config["context_length"],
             stride=config["context_length"] // 2,
             drop_last=True,
@@ -75,7 +91,7 @@ def __main__():
 
         val_loader = create_dataloader(
             val_data,
-            batch_size=16,
+            batch_size=8,
             max_length=config["context_length"],
             stride=config["context_length"] // 2,
             drop_last=False,
@@ -84,11 +100,20 @@ def __main__():
         )
 
         model.to(device)
+
         optimizer = torch.optim.AdamW(
             model.parameters(),
-            lr=0.0004, weight_decay=0.1
+            lr=0.0002, 
+            weight_decay=0.1
         )
-        num_epochs = 6
+
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer, 
+            T_max=25,
+            eta_min=1e-6
+        )
+        
+        num_epochs = 25
         log_message("################## New train ##################")
 
         train_losses, val_losses, track_tokens_seen = train_model(
@@ -101,7 +126,8 @@ def __main__():
             eval_freq=200, 
             eval_iter=50,
             start_context="In the future", 
-            tokenizer=tokenizer
+            tokenizer=tokenizer,
+            scheduler=scheduler
         )    
         torch.save(model.state_dict(), "trained_model.pt")
 
