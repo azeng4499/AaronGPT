@@ -18,9 +18,9 @@ GPT_CONFIG_124M = {
 
 def main():
     start_context = "In the beginning,"
-    eval_freq = 5
-    eval_iter = 5
-    batch_size = 2
+    eval_freq = 100
+    eval_iter = 50
+    batch_size = 8
     num_epochs = 10
     tokenizer = tiktoken.get_encoding("gpt2")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
