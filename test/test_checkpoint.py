@@ -2,22 +2,12 @@ import torch
 import tiktoken
 import os
 import sys
+from main import GPT_CONFIG_124M
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from gpt.gpt import AaronGPTModel
 from utils.utils import generate_text, token_to_text 
-
-GPT_CONFIG_124M = {
-    "vocab_size": 50257,
-    "context_length": 256,
-    "emb_dim": 768,
-    "n_heads": 12,
-    "n_layers": 12,
-    "drop_rate": 0.1,
-    "qkv_bias": False
-}
-
 
 def generate_from_checkpoint(
     checkpoint_path,
