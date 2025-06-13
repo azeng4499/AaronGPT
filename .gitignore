@@ -1,17 +1,6 @@
 tempCodeRunnerFile.*
-
-wikitext_2_test_data.txt
-wikitext_2_train_data.txt
-wikitext_2_validation_data.txt
-train_data.txt
-validation_data.txt
-test_data.txt
-the_verdict.txt
-test_file.txt
+*.txt
 
 __pycache__/
 *.pyc
-
-
-training_logs.txt
-trained_model.pt
+*.pt

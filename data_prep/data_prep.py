@@ -8,7 +8,7 @@ class AaronGPTDataset(Dataset):
         self.input_ids = []
         self.target_ids = []
 
-        token_ids = tokenizer.encode(text, allowed_special={'<|EOS|>'})
+        token_ids = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
 
         for i in range(0, len(token_ids) - max_length, stride):
             input_chunk = token_ids[i:i + max_length]
@@ -56,11 +56,11 @@ def format_data(file):
         if len(stripped) > 0:
             if re.match(title_pattern, stripped):
                 if not eos_flag:
-                    final_text_concat += "<|EOS|> "
+                    final_text_concat += "<|endoftext|> "
                 eos_flag = True
             else:
                 final_text_concat += stripped + " "
                 eos_flag = False
 
-    final_text_concat += "<|EOS|> "
+    final_text_concat += "<|endoftext|> "
     return final_text_concat[8:]

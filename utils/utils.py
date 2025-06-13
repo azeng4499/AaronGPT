@@ -2,6 +2,17 @@
 import torch
 import os
 from datetime import datetime
+from torch.optim.lr_scheduler import LambdaLR
+import math
+
+
+def get_cosine_schedule_with_warmup(optimizer, warmup_steps, total_steps):
+    def lr_lambda(current_step):
+        if current_step < warmup_steps:
+            return current_step / warmup_steps
+        progress = (current_step - warmup_steps) / max(1, total_steps - warmup_steps)
+        return max(0.0, 0.5 * (1.0 + math.cos(math.pi * progress)))
+    return LambdaLR(optimizer, lr_lambda)
 
 def log_message(msg):
     if len(msg) > 0:
@@ -10,7 +21,7 @@ def log_message(msg):
             f.write(f"{timestamp} -> {msg}\n")
 
 def text_to_token(text, tokenizer):
-    encoded = tokenizer.encode(text, allowed_special={'<|EOS|>'})
+    encoded = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
     encoded_tensor = torch.tensor(encoded).unsqueeze(0)
     return encoded_tensor
 
@@ -109,10 +120,11 @@ def generate_and_print_sample(model, tokenizer, device, start_context):
     model.train()
 
 def train_model_simple(model, train_loader, val_loader,
-                    optimizer, device, num_epochs,
-                    eval_freq, eval_iter, start_context, tokenizer, scheduler):
+                       optimizer, device, num_epochs,
+                       eval_freq, eval_iter, start_context,
+                       tokenizer, scheduler):
     
-    early_stopping_patience = 5 
+    early_stopping_patience = 5
     best_val_loss = float('inf')
     patience_counter = 0
     last_checkpoint_path = None
@@ -124,27 +136,31 @@ def train_model_simple(model, train_loader, val_loader,
         model.train()
         for i, (input_batch, target_batch) in enumerate(train_loader):
             optimizer.zero_grad()
-            loss = calc_loss_batch(
-                input_batch, target_batch, model, device
-            )
+            loss = calc_loss_batch(input_batch, target_batch, model, device)
             loss.backward()
             optimizer.step()
+            scheduler.step()
+
             tokens_seen += input_batch.numel()
             global_step += 1
 
             if global_step % eval_freq == 0:
                 train_loss, val_loss = evaluate_model(
-                    model, train_loader, val_loader, device, eval_iter)
+                    model, train_loader, val_loader, device, eval_iter
+                )
                 train_losses.append(train_loss)
                 val_losses.append(val_loss)
                 track_tokens_seen.append(tokens_seen)
-                log_message(f"Epoch {epoch+1} {int(i/len(train_loader)*100)}% complete, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+                log_message(
+                    f"Epoch {epoch+1} {int(i/len(train_loader)*100)}% complete, "
+                    f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}"
+                )
 
-        
-        epoch_train_loss, epoch_val_loss = evaluate_model(model, train_loader, val_loader, device, eval_iter)
-        generate_and_print_sample(
-            model, tokenizer, device, start_context
+        epoch_train_loss, epoch_val_loss = evaluate_model(
+            model, train_loader, val_loader, device, eval_iter
         )
+        generate_and_print_sample(model, tokenizer, device, start_context)
+
         checkpoint_path = f"checkpoints/checkpoint_epoch_{epoch + 1}.pt"
         if last_checkpoint_path and os.path.exists(last_checkpoint_path):
             os.remove(last_checkpoint_path)
@@ -157,19 +173,18 @@ def train_model_simple(model, train_loader, val_loader,
             'val_loss': epoch_val_loss,
         }, checkpoint_path)
 
-        last_checkpoint_path = checkpoint_path 
+        last_checkpoint_path = checkpoint_path
 
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
+        if epoch_val_loss < best_val_loss:
+            best_val_loss = epoch_val_loss
             patience_counter = 0
         else:
             patience_counter += 1
-            
+
         if patience_counter >= early_stopping_patience:
-            print(f"Early stopping at epoch {epoch}")
+            print(f"Early stopping at epoch {epoch + 1}")
             break
-            
-        scheduler.step(epoch_val_loss)
+
         log_message(f"End of Epoch {epoch + 1}")
 
     return train_losses, val_losses, track_tokens_seen

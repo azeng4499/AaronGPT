@@ -2,17 +2,17 @@ import torch
 import tiktoken
 from data_prep.data_prep import create_dataloader
 from gpt.gpt import AaronGPTModel
-from utils.utils import create_training_split, train_model_simple, log_message
+from utils.utils import create_training_split, train_model_simple, log_message, get_cosine_schedule_with_warmup
 from data_prep.data_prep import format_data
 
 
 GPT_CONFIG_124M = {
     "vocab_size": 50257,
     "context_length": 256,
-    "emb_dim": 768,
-    "n_heads": 12,
-    "n_layers": 12,
-    "drop_rate": 0.1,
+    "emb_dim": 512,
+    "n_heads": 8,
+    "n_layers": 6,
+    "drop_rate": 0.2,
     "qkv_bias": False
 }
 
@@ -34,14 +34,9 @@ def main():
         lr=0.0004,
         weight_decay=0.1
     )
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, 
-        mode='min',
-        factor=0.7,
-        patience=3,
-        verbose=True,
-        min_lr=1e-6  
-    )
+    total_steps = len(train_loader) * num_epochs
+    warmup_steps = int(0.1 * total_steps)
+    scheduler = get_cosine_schedule_with_warmup(optimizer, warmup_steps, total_steps)
 
     try:
         with open("./data/the_verdict.txt", "r", encoding="utf-8") as file:
