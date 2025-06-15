@@ -4,6 +4,8 @@ tempCodeRunnerFile.*
 __pycache__/
 *.pyc
 *.pt
+*.csv
+*.pkl
 
 checkpoint
 encoder.json
