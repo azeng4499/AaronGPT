@@ -1,5 +1,4 @@
 import torch
-from config.config import GPT_CONFIG as config
 from gpt.transformer_block.transformer_block import TransformerBlock
 from gpt.transformer_block.layer_norm import LayerNorm
 

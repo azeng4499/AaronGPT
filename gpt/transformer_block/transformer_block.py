@@ -1,6 +1,5 @@
 from gpt.transformer_block.multi_head_attention import MultiHeadAttention
 import torch
-from config.config import GPT_CONFIG as config
 from gpt.transformer_block.feed_forward import FeedForward
 from gpt.transformer_block.layer_norm import LayerNorm
 
