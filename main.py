@@ -25,17 +25,21 @@ def main():
     tokenizer = tiktoken.get_encoding("gpt2")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    input = "you are so dumb, you need to die"
+    input_cb1 = "You are so dumb. You need to die"
+    input_cb2 = "I am a bully."
+
+    input_not_cb1 = "The world is your oyster."
+    input_not_cb2 = "The only thing we have to fear is fear itself."
+
+
     model_state_dict = torch.load("./final_trained_model.pt", map_location=device)
     model.load_state_dict(model_state_dict)
 
-    print(cb_detect_run(
-        input, 
-        model, 
-        tokenizer, 
-        device, 
-        max_length=GPT_CONFIG_124M["context_length"]
-    ))
+    print(cb_detect_run(input_cb1, model, tokenizer, device, max_length=GPT_CONFIG_124M["context_length"]))
+    print(cb_detect_run(input_cb2, model, tokenizer, device, max_length=GPT_CONFIG_124M["context_length"]))
+
+    print(cb_detect_run(input_not_cb1, model, tokenizer, device, max_length=GPT_CONFIG_124M["context_length"]))
+    print(cb_detect_run(input_not_cb2, model, tokenizer, device, max_length=GPT_CONFIG_124M["context_length"]))
 
 
 
