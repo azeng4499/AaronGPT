@@ -43,7 +43,7 @@ def train_classifier(
             val_loader, model, device, num_batches=eval_iter
         )
 
-        log_message(f"Training accuracy: {train_accuracy * 100:.2f}% | ", end="")
+        log_message(f"Training accuracy: {train_accuracy * 100:.2f}%")
         log_message(f"Validation accuracy: {val_accuracy * 100:.2f}%")
 
         train_accs.append(train_accuracy)

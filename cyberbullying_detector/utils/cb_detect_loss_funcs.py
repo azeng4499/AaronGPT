@@ -13,6 +13,8 @@ def calc_accuracy_loader(data_loader, model, device, num_batches=None, pad_token
         if i < num_batches:
             input_batch = input_batch.to(device)
             target_batch = target_batch.to(device)
+            model.to(device)
+
 
             with torch.no_grad():
                 hidden_states = model.get_hidden_states(input_batch)
@@ -37,6 +39,8 @@ def calc_accuracy_loader(data_loader, model, device, num_batches=None, pad_token
 def calc_loss_batch(input_batch, target_batch, model, device, pad_token_id=50256):
     input_batch = input_batch.to(device)
     target_batch = target_batch.to(device)
+    model.to(device)
+
 
     hidden_states = model.get_hidden_states(input_batch)
 

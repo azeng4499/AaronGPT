@@ -9,17 +9,7 @@ from cyberbullying_detector.utils.cb_detect_train_classifer import train_classif
 from cyberbullying_detector.utils.cb_detect_datasets import CyberbullyingDataset
 from global_utils import plot_values, log_message
 
-GPT_CONFIG_124M = {
-    "vocab_size": 50257,
-    "context_length": 1024,
-    "emb_dim": 768,
-    "n_heads": 12,
-    "n_layers": 12,
-    "drop_rate": 0.1,
-    "qkv_bias": True
-}
-
-def cb_detect_train():
+def cb_detect_train(GPT_CONFIG_124M):
 
     num_workers = 0
     batch_size = 8
@@ -52,8 +42,8 @@ def cb_detect_train():
     start_time = time.time()
     optimizer = torch.optim.AdamW(
         model.parameters(), 
-        lr=2e-5, 
-        weight_decay=0.01
+        lr=5e-6, 
+        weight_decay=1e-4
     )
     
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
@@ -63,13 +53,15 @@ def cb_detect_train():
     train_losses, val_losses, train_accs, val_accs, examples_seen = \
         train_classifier(
             model, train_loader, val_loader, optimizer, device,
-            num_epochs=num_epochs, eval_freq=50,
+            num_epochs=num_epochs, eval_freq=100,
             eval_iter=5, scheduler=scheduler
         )
     
     end_time = time.time()
     execution_time_minutes = (end_time - start_time) / 60
     log_message(f"Training completed in {execution_time_minutes:.2f} minutes.")
+
+    torch.save(model.state_dict(), "final_trained_model.pt")
 
     epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))
     examples_seen_tensor = torch.linspace(0, examples_seen, len(train_losses))
