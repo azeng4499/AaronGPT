@@ -9,7 +9,18 @@ from cyberbullying_detector.utils.cb_detect_train_classifer import train_classif
 from cyberbullying_detector.utils.cb_detect_datasets import CyberbullyingDataset
 from global_utils import plot_values, log_message
 
-def cb_detect_train(GPT_CONFIG_124M):
+GPT_CONFIG_124M = {
+    "vocab_size": 50257,
+    "context_length": 1024,
+    "emb_dim": 768,
+    "n_heads": 8,
+    "n_layers": 6,
+    "drop_rate": 0.1,
+    "qkv_bias": True
+}
+
+
+def cb_detect_train():
 
     num_workers = 0
     batch_size = 8
