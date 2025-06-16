@@ -1,10 +1,11 @@
+import torch
 from cyberbullying_detector.utils.cb_detect_loss_funcs import calc_loss_batch, calc_accuracy_loader
 from cyberbullying_detector.utils.cb_detect_evaluate import evaluate_model
 from global_utils import log_message
 
 def train_classifier(
     model, train_loader, val_loader, optimizer, device,
-    num_epochs, eval_freq, eval_iter
+    num_epochs, eval_freq, eval_iter, scheduler=None
 ):
     train_losses, val_losses, train_accs, val_accs = [], [], [], []
     examples_seen, global_step = 0, -1
@@ -18,6 +19,9 @@ def train_classifier(
                 input_batch, target_batch, model, device
             )
             loss.backward()
+            
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
             optimizer.step()
 
             examples_seen += input_batch.shape[0]
@@ -44,5 +48,10 @@ def train_classifier(
 
         train_accs.append(train_accuracy)
         val_accs.append(val_accuracy)
+
+        if scheduler is not None:
+            scheduler.step()
+            current_lr = scheduler.get_last_lr()[0]
+            log_message(f"Learning rate: {current_lr:.2e}")
 
     return train_losses, val_losses, train_accs, val_accs, examples_seen

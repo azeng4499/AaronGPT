@@ -19,7 +19,7 @@ class AaronGPTModel(torch.nn.Module):
             bias=False
         )
 
-    def forward(self, in_idx):
+    def forward(self, in_idx, return_hidden=False):
         batch, seq_len = in_idx.shape
         token_embed = self.token_embed(in_idx)
         pos_embed = self.pos_embed(
@@ -29,8 +29,15 @@ class AaronGPTModel(torch.nn.Module):
         x = self.drop_emb(x)
         x = self.transformer_blocks(x)
         x = self.final_layer_norm(x)
+
+        if return_hidden:
+            return x
+        
         logits = self.out_head(x)
         return logits
+    
+    def get_hidden_states(self, in_idx):
+        return self.forward(in_idx, return_hidden=True)
 
 
 

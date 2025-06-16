@@ -1,6 +1,6 @@
 import torch
 
-def calc_accuracy_loader(data_loader, model, device, num_batches=None):
+def calc_accuracy_loader(data_loader, model, device, num_batches=None, pad_token_id=50256):
     model.eval()
     correct_predictions, num_examples = 0, 0
 
@@ -15,8 +15,15 @@ def calc_accuracy_loader(data_loader, model, device, num_batches=None):
             target_batch = target_batch.to(device)
 
             with torch.no_grad():
-                logits = model(input_batch)[:, -1, :]
-            predicted_labels = torch.argmax(logits, dim=-1)
+                hidden_states = model.get_hidden_states(input_batch)
+                attention_mask = (input_batch != pad_token_id).float()
+                
+                masked_hidden = hidden_states * attention_mask.unsqueeze(-1)
+                seq_lengths = attention_mask.sum(dim=1, keepdim=True)
+                pooled_hidden = masked_hidden.sum(dim=1) / seq_lengths
+                
+                classification_logits = model.out_head(pooled_hidden)
+                predicted_labels = torch.argmax(classification_logits, dim=-1)
         
             num_examples += predicted_labels.shape[0]
             correct_predictions += (
@@ -27,13 +34,21 @@ def calc_accuracy_loader(data_loader, model, device, num_batches=None):
 
     return correct_predictions / num_examples
 
-def calc_loss_batch(input_batch, target_batch, model, device):
+def calc_loss_batch(input_batch, target_batch, model, device, pad_token_id=50256):
     input_batch = input_batch.to(device)
     target_batch = target_batch.to(device)
 
-    logits = model(input_batch)[:, -1, :]
+    hidden_states = model.get_hidden_states(input_batch)
 
-    loss = torch.nn.functional.cross_entropy(logits, target_batch)
+    attention_mask = (input_batch != pad_token_id).float() 
+
+    masked_hidden = hidden_states * attention_mask.unsqueeze(-1)
+    seq_lengths = attention_mask.sum(dim=1, keepdim=True)
+    pooled_hidden = masked_hidden.sum(dim=1) / seq_lengths
+
+    classification_logits = model.out_head(pooled_hidden)
+
+    loss = torch.nn.functional.cross_entropy(classification_logits, target_batch)
 
     return loss
 

@@ -4,7 +4,7 @@ tempCodeRunnerFile.*
 __pycache__/
 *.pyc
 *.pt
-*.csv
+*.pth
 *.pkl
 
 checkpoint

@@ -15,7 +15,7 @@ GPT_CONFIG_124M = {
     "emb_dim": 768,
     "n_heads": 12,
     "n_layers": 12,
-    "drop_rate": 0.0,
+    "drop_rate": 0.1,
     "qkv_bias": True
 }
 
@@ -23,7 +23,7 @@ def cb_detect_train():
 
     num_workers = 0
     batch_size = 8
-    num_epochs = 5
+    num_epochs = 10
     tokenizer = tiktoken.get_encoding("gpt2")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -52,15 +52,19 @@ def cb_detect_train():
     start_time = time.time()
     optimizer = torch.optim.AdamW(
         model.parameters(), 
-        lr=5e-5, 
-        weight_decay=0.1
+        lr=2e-5, 
+        weight_decay=0.01
+    )
+    
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=num_epochs, eta_min=1e-6
     )
 
     train_losses, val_losses, train_accs, val_accs, examples_seen = \
         train_classifier(
             model, train_loader, val_loader, optimizer, device,
             num_epochs=num_epochs, eval_freq=50,
-            eval_iter=5
+            eval_iter=5, scheduler=scheduler
         )
     
     end_time = time.time()
