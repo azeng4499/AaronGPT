@@ -5,9 +5,9 @@ from pretrained_gpt2.utils.load_weights_into_gpt import download_and_load_gpt2, 
 from gpt.gpt import AaronGPTModel
 
 def create_gpt2_model(config):
-    pickle_path_settings = "./pickle_vars/pretrained_gpt2_settings.pkl"
-    pickle_path_params = "./pickle_vars/pretrained_gpt2_params.pkl"
-    pickle_path_model = "./pickle_vars/pretrained_gpt2_mdoel.pkl"
+    pickle_path_settings = "/root/AaronGPT/pickle_vars/pretrained_gpt2_settings.pkl"
+    pickle_path_params = "/root/AaronGPT/pickle_vars/pretrained_gpt2_params.pkl"
+    pickle_path_model = "/root/AaronGPT/pickle_vars/pretrained_gpt2_mdoel.pkl"
 
     if os.path.exists(pickle_path_settings) and os.path.exists(pickle_path_params) and os.path.exists(pickle_path_model):
         with open(pickle_path_settings, "rb") as f:

@@ -4,3 +4,4 @@ tensorflow
 tiktoken
 torch
 numpy
+tqdm

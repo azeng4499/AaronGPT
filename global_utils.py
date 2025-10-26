@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 def log_message(msg):
     if len(msg) > 0:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with open("logs/training_logs.txt", "a") as f:
+        with open("/root/AaronGPT/logs/training_logs.txt", "a") as f:
             f.write(f"{timestamp} -> {msg}\n")
 
 def plot_values(

@@ -5,8 +5,10 @@ import pandas as pd
 class CyberbullyingDataset(Dataset):
     def __init__(self, csv_file, tokenizer, max_length=None, pad_token_id=50256):
         self.data = pd.read_csv(csv_file)
+        self.data = self.data.dropna(subset=["Text"])
+        self.data["Text"] = self.data["Text"].astype(str)
         self.encoded_texts = [tokenizer.encode(text) for text in self.data["Text"]]
-
+        
         if max_length is None:
             self.max_length = self._longest_encoded_length()
         else:
