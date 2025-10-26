@@ -5,7 +5,7 @@ from global_utils import log_message
 
 def train_classifier(
     model, train_loader, val_loader, optimizer, device,
-    num_epochs, eval_freq, eval_iter, scheduler=None
+    num_epochs, eval_freq, eval_iter, scheduler=None, grad_clip=1.0
 ):
     train_losses, val_losses, train_accs, val_accs = [], [], [], []
     examples_seen, global_step = 0, -1
@@ -19,8 +19,9 @@ def train_classifier(
                 input_batch, target_batch, model, device
             )
             loss.backward()
-            
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+            if grad_clip is not None:
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=grad_clip)
 
             optimizer.step()
 
