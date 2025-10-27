@@ -7,7 +7,7 @@ import torch
 from gpt.transformer_block.transformer_block import TransformerBlock
 from gpt.transformer_block.layer_norm import LayerNorm
 
-class AaronGPTModel(torch.nn.Module):
+class BTPModel(torch.nn.Module):
     def __init__(self, config):
         super().__init__()
         self.token_embed = torch.nn.Embedding(config["vocab_size"], config["emb_dim"])

@@ -7,7 +7,7 @@ import pickle
 import torch
 import os
 from pretrained_gpt2.utils.load_weights_into_gpt import download_and_load_gpt2, load_weights_into_gpt
-from gpt.gpt import AaronGPTModel
+from gpt.gpt import BTPModel
 
 def create_gpt2_model(config):
     pickle_path_settings = "./pickle_vars/pretrained_gpt2_settings.pkl"
@@ -27,7 +27,7 @@ def create_gpt2_model(config):
         settings, params = download_and_load_gpt2(
             model_size="124M", models_dir="pretrained_gpt2"
         )
-        model = AaronGPTModel(config)
+        model = BTPModel(config)
         load_weights_into_gpt(model, params)
 
         model.eval()

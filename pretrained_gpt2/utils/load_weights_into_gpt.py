@@ -6,7 +6,7 @@
 import torch
 import numpy as np
 from pretrained_gpt2.utils.weights_downloader import download_and_load_gpt2
-from gpt.gpt import AaronGPTModel
+from gpt.gpt import BTPModel
 
 def assign(left, right):
     if left.shape != right.shape:
@@ -71,8 +71,8 @@ def load_weights_into_gpt(gpt, params):
     gpt.out_head.weight = assign(gpt.out_head.weight, params["wte"])
 
 def create_pretrained_gpt2_model(device, config):
-    settings, params = download_and_load_gpt2(model_size="124M", models_dir="pretrained_gpt2")
-    gpt = AaronGPTModel(config)
+    _, params = download_and_load_gpt2(model_size="124M", models_dir="pretrained_gpt2")
+    gpt = BTPModel(config)
     gpt.eval()
     load_weights_into_gpt(gpt, params)
     gpt.to(device)

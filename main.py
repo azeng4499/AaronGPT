@@ -3,7 +3,7 @@ import tiktoken
 from pretrained_gpt2.create_gpt2_model import create_gpt2_model
 from cyberbullying_detector.utils.cb_detect_run import cb_detect_run
 from cyberbullying_detector.cb_detect_train import cb_detect_train
-from gpt.gpt import AaronGPTModel
+from gpt.gpt import BTPModel
 
 GPT_CONFIG_124M = {
     "vocab_size": 50257,
@@ -24,7 +24,7 @@ def train():
 
 def test():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = AaronGPTModel(GPT_CONFIG_124M).to(device)
+    model = BTPModel(GPT_CONFIG_124M).to(device)
     state_dict = torch.load("final_trained_model.pt", map_location=device)
     model.load_state_dict(state_dict)
     tokenizer = tiktoken.get_encoding("gpt2")
