@@ -22,7 +22,10 @@ def cb_detect_run(text, model, tokenizer, device, max_length=None, pad_token_id=
         pooled_hidden = masked_hidden.sum(dim=1) / seq_lengths
         
         classification_logits = model.out_head(pooled_hidden)
-    
-    predicted_label = torch.argmax(classification_logits, dim=-1)
+        probs = torch.softmax(classification_logits, dim=-1)
+        
+        predicted_label = torch.argmax(probs, dim=-1)
+        confidence = probs[0, predicted_label].item()
 
-    return "cyberbullying" if predicted_label == 1 else "not cyberbullying"
+    label = "cyberbullying" if predicted_label == 1 else "not cyberbullying"
+    return label, confidence

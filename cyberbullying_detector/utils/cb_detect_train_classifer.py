@@ -5,7 +5,7 @@ from global_utils import log_message
 
 def train_classifier(
     model, train_loader, val_loader, optimizer, device,
-    num_epochs, eval_freq, eval_iter, scheduler=None, grad_clip=1.0, log_freq=50
+    num_epochs, eval_freq, eval_iter, scheduler=None, grad_clip=1.0
 ):
     train_losses, val_losses, train_accs, val_accs = [], [], [], []
     examples_seen, global_step = 0, -1
@@ -27,10 +27,6 @@ def train_classifier(
 
             examples_seen += input_batch.shape[0]
             global_step += 1
-
-            # Log progress for immediate feedback
-            if global_step % log_freq == 0:
-                log_message(f"Epoch {epoch+1}, Step {global_step:06d}: Loss {loss.item():.4f}, Examples seen: {examples_seen}")
 
             if global_step % eval_freq == 0:
                 train_loss, val_loss = evaluate_model(

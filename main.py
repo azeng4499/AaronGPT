@@ -7,7 +7,7 @@ from gpt.gpt import AaronGPTModel
 
 GPT_CONFIG_124M = {
     "vocab_size": 50258,
-    "context_length": 256,
+    "context_length": 512,
     "emb_dim": 768,
     "n_heads": 12,
     "n_layers": 12,

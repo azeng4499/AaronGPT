@@ -9,7 +9,7 @@ from global_utils import plot_values, log_message
 
 GPT_CONFIG_124M = {
     "vocab_size": 50257,
-    "context_length": 256,
+    "context_length": 512,
     "emb_dim": 768,
     "n_heads": 12,
     "n_layers": 12,
@@ -32,7 +32,7 @@ def cb_detect_train():
 
     train_dataset = CyberbullyingDataset(
         csv_file="/root/AaronGPT/cyberbullying_detector/data/cyberbullying_train.csv",
-        max_length=128,
+        max_length=512,
         tokenizer=tokenizer
     )
     
@@ -75,11 +75,10 @@ def cb_detect_train():
             optimizer=optimizer,
             device=device,
             num_epochs=num_epochs,
-            eval_freq=1000,  # Full evaluation frequency
+            eval_freq=100,
             eval_iter=10,
             scheduler=scheduler,
             grad_clip=grad_clip,
-            log_freq=50     # Simple progress logging frequency
         )
 
     end_time = time.time()
@@ -88,19 +87,25 @@ def cb_detect_train():
 
     torch.save(model.state_dict(), "final_trained_model.pt")
 
-    # plot_values(
-    #     torch.arange(len(train_losses)),
-    #     torch.arange(examples_seen, steps=len(train_losses)),
-    #     train_losses, 
-    #     val_losses,
-    #     "tv_loss.png"
-    # )
+    loss_epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))
+    loss_examples_seen_tensor = torch.linspace(0, examples_seen, len(train_losses))
 
-    # plot_values(
-    #     torch.arange(len(train_accs)),
-    #     torch.arange(examples_seen, steps=len(train_accs)),
-    #     train_accs, 
-    #     val_accs,
-    #     "tv_acc.png", 
-    #     label="accuracy"
-    # )
+    plot_values(
+        loss_epochs_tensor,
+        loss_examples_seen_tensor,
+        train_losses, 
+        val_losses,
+        "tv_loss.png"
+    )
+
+    acc_epochs_tensor = torch.linspace(0, num_epochs, len(train_accs))
+    acc_examples_seen_tensor = torch.linspace(0, examples_seen, len(train_accs))
+
+    plot_values(
+        acc_epochs_tensor,
+        acc_examples_seen_tensor,
+        train_accs, 
+        val_accs,
+        "tv_acc.png", 
+        label="accuracy"
+    )

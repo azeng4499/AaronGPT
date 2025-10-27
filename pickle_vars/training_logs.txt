@@ -1,0 +1,100 @@
+2025-10-26 22:59:11 -> Epoch 1 (Step 000000): Train loss 3.297, Val loss 3.306
+2025-10-26 22:59:44 -> Epoch 1 (Step 000100): Train loss 2.068, Val loss 1.985
+2025-10-26 23:00:17 -> Epoch 1 (Step 000200): Train loss 0.969, Val loss 0.929
+2025-10-26 23:00:50 -> Epoch 1 (Step 000300): Train loss 0.654, Val loss 0.627
+2025-10-26 23:01:23 -> Epoch 1 (Step 000400): Train loss 0.550, Val loss 0.522
+2025-10-26 23:01:57 -> Epoch 1 (Step 000500): Train loss 0.499, Val loss 0.452
+2025-10-26 23:02:30 -> Epoch 1 (Step 000600): Train loss 0.447, Val loss 0.416
+2025-10-26 23:03:03 -> Epoch 1 (Step 000700): Train loss 0.447, Val loss 0.398
+2025-10-26 23:03:37 -> Epoch 1 (Step 000800): Train loss 0.427, Val loss 0.382
+2025-10-26 23:04:10 -> Epoch 1 (Step 000900): Train loss 0.421, Val loss 0.372
+2025-10-26 23:04:43 -> Epoch 1 (Step 001000): Train loss 0.421, Val loss 0.364
+2025-10-26 23:05:16 -> Epoch 1 (Step 001100): Train loss 0.397, Val loss 0.355
+2025-10-26 23:05:50 -> Epoch 1 (Step 001200): Train loss 0.396, Val loss 0.347
+2025-10-26 23:06:23 -> Epoch 1 (Step 001300): Train loss 0.434, Val loss 0.345
+2025-10-26 23:06:57 -> Epoch 1 (Step 001400): Train loss 0.337, Val loss 0.340
+2025-10-26 23:07:30 -> Epoch 1 (Step 001500): Train loss 0.378, Val loss 0.338
+2025-10-26 23:08:03 -> Epoch 1 (Step 001600): Train loss 0.369, Val loss 0.335
+2025-10-26 23:08:37 -> Epoch 1 (Step 001700): Train loss 0.425, Val loss 0.334
+2025-10-26 23:09:10 -> Epoch 1 (Step 001800): Train loss 0.325, Val loss 0.331
+2025-10-26 23:09:44 -> Epoch 1 (Step 001900): Train loss 0.375, Val loss 0.329
+2025-10-26 23:10:17 -> Epoch 1 (Step 002000): Train loss 0.329, Val loss 0.326
+2025-10-26 23:10:50 -> Epoch 1 (Step 002100): Train loss 0.358, Val loss 0.324
+2025-10-26 23:11:24 -> Epoch 1 (Step 002200): Train loss 0.379, Val loss 0.322
+2025-10-26 23:11:57 -> Epoch 1 (Step 002300): Train loss 0.341, Val loss 0.320
+2025-10-26 23:12:30 -> Epoch 1 (Step 002400): Train loss 0.339, Val loss 0.319
+2025-10-26 23:13:04 -> Epoch 1 (Step 002500): Train loss 0.354, Val loss 0.318
+2025-10-26 23:13:37 -> Epoch 1 (Step 002600): Train loss 0.369, Val loss 0.316
+2025-10-26 23:14:10 -> Epoch 1 (Step 002700): Train loss 0.352, Val loss 0.315
+2025-10-26 23:14:44 -> Epoch 1 (Step 002800): Train loss 0.364, Val loss 0.315
+2025-10-26 23:15:17 -> Epoch 1 (Step 002900): Train loss 0.325, Val loss 0.314
+2025-10-26 23:15:42 -> Training accuracy: 87.34%
+2025-10-26 23:15:42 -> Validation accuracy: 86.72%
+2025-10-26 23:15:42 -> Learning rate: 7.75e-06
+2025-10-26 23:15:57 -> Epoch 2 (Step 003000): Train loss 0.323, Val loss 0.314
+2025-10-26 23:16:30 -> Epoch 2 (Step 003100): Train loss 0.312, Val loss 0.312
+2025-10-26 23:17:04 -> Epoch 2 (Step 003200): Train loss 0.321, Val loss 0.312
+2025-10-26 23:17:37 -> Epoch 2 (Step 003300): Train loss 0.367, Val loss 0.310
+2025-10-26 23:18:10 -> Epoch 2 (Step 003400): Train loss 0.303, Val loss 0.310
+2025-10-26 23:18:44 -> Epoch 2 (Step 003500): Train loss 0.363, Val loss 0.309
+2025-10-26 23:19:17 -> Epoch 2 (Step 003600): Train loss 0.372, Val loss 0.309
+2025-10-26 23:19:51 -> Epoch 2 (Step 003700): Train loss 0.339, Val loss 0.308
+2025-10-26 23:20:24 -> Epoch 2 (Step 003800): Train loss 0.324, Val loss 0.309
+2025-10-26 23:20:58 -> Epoch 2 (Step 003900): Train loss 0.328, Val loss 0.307
+2025-10-26 23:21:31 -> Epoch 2 (Step 004000): Train loss 0.306, Val loss 0.307
+2025-10-26 23:22:05 -> Epoch 2 (Step 004100): Train loss 0.380, Val loss 0.307
+2025-10-26 23:22:38 -> Epoch 2 (Step 004200): Train loss 0.366, Val loss 0.307
+2025-10-26 23:23:12 -> Epoch 2 (Step 004300): Train loss 0.380, Val loss 0.306
+2025-10-26 23:23:46 -> Epoch 2 (Step 004400): Train loss 0.312, Val loss 0.307
+2025-10-26 23:24:19 -> Epoch 2 (Step 004500): Train loss 0.361, Val loss 0.306
+2025-10-26 23:24:53 -> Epoch 2 (Step 004600): Train loss 0.306, Val loss 0.304
+2025-10-26 23:25:26 -> Epoch 2 (Step 004700): Train loss 0.363, Val loss 0.304
+2025-10-26 23:26:00 -> Epoch 2 (Step 004800): Train loss 0.306, Val loss 0.304
+2025-10-26 23:26:33 -> Epoch 2 (Step 004900): Train loss 0.344, Val loss 0.303
+2025-10-26 23:27:07 -> Epoch 2 (Step 005000): Train loss 0.327, Val loss 0.302
+2025-10-26 23:27:40 -> Epoch 2 (Step 005100): Train loss 0.299, Val loss 0.301
+2025-10-26 23:28:13 -> Epoch 2 (Step 005200): Train loss 0.297, Val loss 0.301
+2025-10-26 23:28:47 -> Epoch 2 (Step 005300): Train loss 0.350, Val loss 0.300
+2025-10-26 23:29:20 -> Epoch 2 (Step 005400): Train loss 0.339, Val loss 0.301
+2025-10-26 23:29:54 -> Epoch 2 (Step 005500): Train loss 0.316, Val loss 0.299
+2025-10-26 23:30:27 -> Epoch 2 (Step 005600): Train loss 0.348, Val loss 0.298
+2025-10-26 23:31:00 -> Epoch 2 (Step 005700): Train loss 0.367, Val loss 0.298
+2025-10-26 23:31:34 -> Epoch 2 (Step 005800): Train loss 0.297, Val loss 0.298
+2025-10-26 23:32:07 -> Epoch 2 (Step 005900): Train loss 0.355, Val loss 0.297
+2025-10-26 23:32:23 -> Training accuracy: 86.56%
+2025-10-26 23:32:23 -> Validation accuracy: 87.19%
+2025-10-26 23:32:23 -> Learning rate: 3.25e-06
+2025-10-26 23:32:47 -> Epoch 3 (Step 006000): Train loss 0.306, Val loss 0.297
+2025-10-26 23:33:20 -> Epoch 3 (Step 006100): Train loss 0.315, Val loss 0.297
+2025-10-26 23:33:53 -> Epoch 3 (Step 006200): Train loss 0.286, Val loss 0.297
+2025-10-26 23:34:27 -> Epoch 3 (Step 006300): Train loss 0.286, Val loss 0.297
+2025-10-26 23:35:00 -> Epoch 3 (Step 006400): Train loss 0.307, Val loss 0.297
+2025-10-26 23:35:34 -> Epoch 3 (Step 006500): Train loss 0.326, Val loss 0.296
+2025-10-26 23:36:07 -> Epoch 3 (Step 006600): Train loss 0.283, Val loss 0.296
+2025-10-26 23:36:40 -> Epoch 3 (Step 006700): Train loss 0.314, Val loss 0.296
+2025-10-26 23:37:14 -> Epoch 3 (Step 006800): Train loss 0.327, Val loss 0.295
+2025-10-26 23:37:47 -> Epoch 3 (Step 006900): Train loss 0.281, Val loss 0.295
+2025-10-26 23:38:20 -> Epoch 3 (Step 007000): Train loss 0.301, Val loss 0.295
+2025-10-26 23:38:54 -> Epoch 3 (Step 007100): Train loss 0.333, Val loss 0.295
+2025-10-26 23:39:27 -> Epoch 3 (Step 007200): Train loss 0.327, Val loss 0.295
+2025-10-26 23:40:01 -> Epoch 3 (Step 007300): Train loss 0.336, Val loss 0.295
+2025-10-26 23:40:34 -> Epoch 3 (Step 007400): Train loss 0.318, Val loss 0.294
+2025-10-26 23:41:07 -> Epoch 3 (Step 007500): Train loss 0.283, Val loss 0.294
+2025-10-26 23:41:41 -> Epoch 3 (Step 007600): Train loss 0.309, Val loss 0.294
+2025-10-26 23:42:14 -> Epoch 3 (Step 007700): Train loss 0.338, Val loss 0.294
+2025-10-26 23:42:48 -> Epoch 3 (Step 007800): Train loss 0.311, Val loss 0.293
+2025-10-26 23:43:21 -> Epoch 3 (Step 007900): Train loss 0.318, Val loss 0.293
+2025-10-26 23:43:54 -> Epoch 3 (Step 008000): Train loss 0.375, Val loss 0.293
+2025-10-26 23:44:28 -> Epoch 3 (Step 008100): Train loss 0.327, Val loss 0.294
+2025-10-26 23:45:01 -> Epoch 3 (Step 008200): Train loss 0.326, Val loss 0.293
+2025-10-26 23:45:34 -> Epoch 3 (Step 008300): Train loss 0.328, Val loss 0.294
+2025-10-26 23:46:08 -> Epoch 3 (Step 008400): Train loss 0.343, Val loss 0.293
+2025-10-26 23:46:41 -> Epoch 3 (Step 008500): Train loss 0.322, Val loss 0.293
+2025-10-26 23:47:15 -> Epoch 3 (Step 008600): Train loss 0.328, Val loss 0.293
+2025-10-26 23:47:48 -> Epoch 3 (Step 008700): Train loss 0.287, Val loss 0.293
+2025-10-26 23:48:21 -> Epoch 3 (Step 008800): Train loss 0.305, Val loss 0.293
+2025-10-26 23:48:55 -> Epoch 3 (Step 008900): Train loss 0.310, Val loss 0.293
+2025-10-26 23:49:02 -> Training accuracy: 86.41%
+2025-10-26 23:49:02 -> Validation accuracy: 87.97%
+2025-10-26 23:49:02 -> Learning rate: 1.00e-06
+2025-10-26 23:49:02 -> Training completed in 49.99 minutes.
