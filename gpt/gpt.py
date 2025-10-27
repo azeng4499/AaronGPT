@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import torch
 from gpt.transformer_block.transformer_block import TransformerBlock
 from gpt.transformer_block.layer_norm import LayerNorm
@@ -8,16 +13,17 @@ class AaronGPTModel(torch.nn.Module):
         self.token_embed = torch.nn.Embedding(config["vocab_size"], config["emb_dim"])
         self.pos_embed = torch.nn.Embedding(config["context_length"], config["emb_dim"])
         self.drop_emb = torch.nn.Dropout(config["drop_rate"])
+        self.num_classes = config.get("num_classes", None)
 
         self.transformer_blocks = torch.nn.Sequential(
             *[TransformerBlock(config) for _ in range(config["n_layers"])])
         
         self.final_layer_norm = LayerNorm(config["emb_dim"])
-        self.out_head = torch.nn.Linear(
-            config["emb_dim"],
-            config["vocab_size"],
-            bias=False
-        )
+
+        if self.num_classes is not None:
+            self.out_head = torch.nn.Linear(config["emb_dim"], self.num_classes, bias=True)
+        else:
+            self.out_head = torch.nn.Linear(config["emb_dim"], config["vocab_size"], bias=False)
 
     def forward(self, in_idx, return_hidden=False):
         batch, seq_len = in_idx.shape

@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import torch
 
 def calc_accuracy_loader(data_loader, model, device, num_batches=None, pad_token_id=50256):

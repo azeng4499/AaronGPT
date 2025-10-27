@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 from gpt.transformer_block.multi_head_attention import MultiHeadAttention
 import torch
 from gpt.transformer_block.feed_forward import FeedForward

@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import time
 import torch
 import tiktoken
@@ -7,7 +12,7 @@ from cyberbullying_detector.utils.cb_detect_train_classifer import train_classif
 from cyberbullying_detector.utils.cb_detect_datasets import CyberbullyingDataset
 from global_utils import plot_values, log_message
 
-GPT_CONFIG_124M = {
+DETECTOR_CONFIG_124M = {
     "vocab_size": 50257,
     "context_length": 512,
     "emb_dim": 768,
@@ -17,54 +22,66 @@ GPT_CONFIG_124M = {
     "qkv_bias": True
 }
 
+NUM_WORKERS = 4
+BATCH_SIZE = 64
+NUM_EPOCHS = 3
+LEARNING_RATE = 1e-5
+WEIGHT_DECAY = 0.01
+GRAD_CLIP = 1.0
 
-def cb_detect_train():
+def generateChart(name, train_data, val_data, examples_seen, label = 'loss'):
+    loss_epochs_tensor = torch.linspace(0, NUM_EPOCHS, len(train_data))
+    loss_examples_seen_tensor = torch.linspace(0, examples_seen, len(train_data))
 
-    num_workers = 4
-    batch_size = 64
-    num_epochs = 3
-    learning_rate = 1e-5
-    weight_decay = 0.01
-    grad_clip = 1.0
+    plot_values(
+        loss_epochs_tensor,
+        loss_examples_seen_tensor,
+        train_data, 
+        val_data,
+        name,
+        label=label
+    )
+
+def cb_detect_train(train_data_path, val_data_path):
 
     tokenizer = tiktoken.get_encoding("gpt2")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_dataset = CyberbullyingDataset(
-        csv_file="/root/AaronGPT/cyberbullying_detector/data/cyberbullying_train.csv",
-        max_length=512,
+        csv_file=train_data_path,
+        max_length=DETECTOR_CONFIG_124M.context_length,
         tokenizer=tokenizer
     )
     
     val_dataset = CyberbullyingDataset(
-        csv_file="/root/AaronGPT/cyberbullying_detector/data/cyberbullying_validation.csv",
-        max_length=train_dataset.max_length,
+        csv_file=val_data_path,
+        max_length=DETECTOR_CONFIG_124M.context_length,
         tokenizer=tokenizer
     )
 
     train_loader = DataLoader(
-        dataset=train_dataset, batch_size=batch_size, shuffle=True,
-        num_workers=num_workers, pin_memory=True, drop_last=True,
+        dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,
+        num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
     )
     val_loader = DataLoader(
-        dataset=val_dataset, batch_size=batch_size,
-        num_workers=num_workers, pin_memory=True, drop_last=False,
+        dataset=val_dataset, batch_size=BATCH_SIZE,
+        num_workers=NUM_WORKERS, pin_memory=True, drop_last=False,
     )
 
-    model, settings, params = create_gpt2_model(GPT_CONFIG_124M)
+    model, _, _ = create_gpt2_model(DETECTOR_CONFIG_124M)
     model.to(device)
 
-    print("GPT2_SMALL Model loaded. Starting training...")
+    log_message(f"GPT2_SMALL Model loaded. Starting training...")
 
     start_time = time.time()
     optimizer = torch.optim.AdamW(
         model.parameters(),
-        lr=learning_rate,
-        weight_decay=weight_decay
+        lr=LEARNING_RATE,
+        weight_decay=WEIGHT_DECAY
     )
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=num_epochs, eta_min=1e-6
+        optimizer, T_max=NUM_EPOCHS, eta_min=1e-6
     )
 
     train_losses, val_losses, train_accs, val_accs, examples_seen = \
@@ -74,11 +91,11 @@ def cb_detect_train():
             val_loader=val_loader,
             optimizer=optimizer,
             device=device,
-            num_epochs=num_epochs,
+            num_epochs=NUM_EPOCHS,
             eval_freq=100,
             eval_iter=10,
             scheduler=scheduler,
-            grad_clip=grad_clip,
+            grad_clip=GRAD_CLIP,
         )
 
     end_time = time.time()
@@ -87,25 +104,13 @@ def cb_detect_train():
 
     torch.save(model.state_dict(), "final_trained_model.pt")
 
-    loss_epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))
-    loss_examples_seen_tensor = torch.linspace(0, examples_seen, len(train_losses))
-
-    plot_values(
-        loss_epochs_tensor,
-        loss_examples_seen_tensor,
-        train_losses, 
-        val_losses,
-        "tv_loss.png"
+    generateChart(
+        name="loss-plot.png", train_data=train_losses, 
+        val_data=val_losses, examples_seen=examples_seen
     )
 
-    acc_epochs_tensor = torch.linspace(0, num_epochs, len(train_accs))
-    acc_examples_seen_tensor = torch.linspace(0, examples_seen, len(train_accs))
-
-    plot_values(
-        acc_epochs_tensor,
-        acc_examples_seen_tensor,
-        train_accs, 
-        val_accs,
-        "tv_acc.png", 
+    generateChart(
+        name="accuracy-plot.png", train_data=train_accs, 
+        val_data=val_accs, examples_seen=examples_seen,
         label="accuracy"
     )

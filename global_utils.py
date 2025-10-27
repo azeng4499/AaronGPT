@@ -1,7 +1,5 @@
-import torch
 from datetime import datetime
 import matplotlib.pyplot as plt
-
 
 def log_message(msg):
     if len(msg) > 0:

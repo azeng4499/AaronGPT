@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import torch
 import numpy as np
 from pretrained_gpt2.utils.weights_downloader import download_and_load_gpt2

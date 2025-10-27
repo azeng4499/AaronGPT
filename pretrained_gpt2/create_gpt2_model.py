@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import pickle
 import torch
 import os
@@ -5,9 +10,9 @@ from pretrained_gpt2.utils.load_weights_into_gpt import download_and_load_gpt2, 
 from gpt.gpt import AaronGPTModel
 
 def create_gpt2_model(config):
-    pickle_path_settings = "/root/AaronGPT/pickle_vars/pretrained_gpt2_settings.pkl"
-    pickle_path_params = "/root/AaronGPT/pickle_vars/pretrained_gpt2_params.pkl"
-    pickle_path_model = "/root/AaronGPT/pickle_vars/pretrained_gpt2_mdoel.pkl"
+    pickle_path_settings = "./pickle_vars/pretrained_gpt2_settings.pkl"
+    pickle_path_params = "./pickle_vars/pretrained_gpt2_params.pkl"
+    pickle_path_model = "./pickle_vars/pretrained_gpt2_model.pkl"
 
     if os.path.exists(pickle_path_settings) and os.path.exists(pickle_path_params) and os.path.exists(pickle_path_model):
         with open(pickle_path_settings, "rb") as f:

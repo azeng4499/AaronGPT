@@ -1,3 +1,8 @@
+# This implementation is adapted from the GPT model in
+# "Build a Large Language Model from Scratch" by Sebastian Raschka.
+# Some parts have been modified or extended to better align with the design and 
+# functionality requirements of the Better Threads Project.
+
 import torch
 from cyberbullying_detector.utils.cb_detect_loss_funcs import calc_loss_batch, calc_accuracy_loader
 from cyberbullying_detector.utils.cb_detect_evaluate import evaluate_model
